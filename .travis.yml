@@ -4,7 +4,7 @@ services:
   -docker
 
 before_install:
-  - docker build -t rpawan48/react-test npm test -- --coverage
+  - docker run -e CI=true rpawan48/react-test npm test -- --coverage
 
 after_success:
   - docker build -t rpawan48/multi-client ./client
