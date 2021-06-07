@@ -1,0 +1,20 @@
+sudo: required
+
+services: 
+  -docker
+
+before_install:
+  - docker build -t rpawan48/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t rpawan48/multi-client ./client
+  - docker build -t rpawan48/multi-nginx ./nginx
+  - docker build -t rpawan48/multi-server ./server
+  - docker build -t rpawan48/multi-worker ./worker
+
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --passsword-stdin
+
+- docker push rpawan48/multi-client
+- docker push rpawan48/multi-nginx
+- docker push rpawan48/multi-server
+- docker push rpawan48/multi-worker
